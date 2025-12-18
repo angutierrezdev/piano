@@ -38,18 +38,10 @@ class AudioEngine: ObservableObject {
     
     private func loadSoundFont() {
         do {
-            // Load the default General MIDI sound bank
-            if let soundFontURL = Bundle.main.url(forResource: "GeneralUser GS", withExtension: "sf2") {
-                try sampler.loadSoundBankInstrument(at: soundFontURL,
-                                                   program: currentSound.midiProgram,
-                                                   bankMSB: UInt8(kAUSampler_DefaultMelodicBankMSB),
-                                                   bankLSB: UInt8(kAUSampler_DefaultBankLSB))
-            } else {
-                // Use Apple's built-in instruments
-                try sampler.loadInstrument(at: currentSound.midiProgram)
-            }
+            // Use Apple's built-in General MIDI instruments
+            try sampler.loadInstrument(at: currentSound.midiProgram)
         } catch {
-            print("Error loading sound font: \(error.localizedDescription)")
+            print("Error loading instrument: \(error.localizedDescription)")
         }
     }
     
@@ -70,12 +62,8 @@ class AudioEngine: ObservableObject {
 extension AVAudioUnitSampler {
     func loadInstrument(at program: UInt8) throws {
         // Use Apple's built-in General MIDI instruments
-        // For iOS, we use the built-in sampler instruments
-        let bankMSB = UInt8(kAUSampler_DefaultMelodicBankMSB)
-        let bankLSB = UInt8(kAUSampler_DefaultBankLSB)
-        
         // Program change to select the instrument
-        sampler.sendProgramChange(program, onChannel: 0)
+        self.sendProgramChange(program, onChannel: 0)
         
         // Note: On iOS, the built-in sampler automatically uses the system's General MIDI soundbank
         // No need to explicitly load a soundbank file
