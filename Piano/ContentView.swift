@@ -51,14 +51,16 @@ struct ContentView: View {
                             if note.isBlack {
                                 let whiteKeysBeforeCount = notes[0..<index].filter { !$0.isBlack }.count
                                 let keyWidth = geometry.size.width / CGFloat(notes.filter { !$0.isBlack }.count)
-                                let offset = CGFloat(whiteKeysBeforeCount) * keyWidth + keyWidth * 0.7
+                                let blackKeyWidth = keyWidth * 0.6
+                                // Position black key centered between white keys
+                                let offset = CGFloat(whiteKeysBeforeCount) * keyWidth + keyWidth - (blackKeyWidth / 2)
                                 
                                 PianoKey(
                                     note: note.midiNote,
                                     isBlack: true,
                                     audioEngine: audioEngine
                                 )
-                                .frame(width: keyWidth * 0.6, height: geometry.size.height * 0.6)
+                                .frame(width: blackKeyWidth, height: geometry.size.height * 0.6)
                                 .offset(x: offset)
                             }
                         }
