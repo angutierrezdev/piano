@@ -54,8 +54,10 @@ struct ContentView: View {
                             if note.isBlack {
                                 let whiteKeysBeforeCount = notes[0..<index].filter { !$0.isBlack }.count
                                 let blackKeyWidth = keyWidth * 0.6
-                                // Position black key centered between white keys
-                                let offset = CGFloat(whiteKeysBeforeCount) * keyWidth + keyWidth - (blackKeyWidth / 2)
+                                // Position black key centered at the right edge of the preceding white key
+                                // The right edge is at whiteKeysBeforeCount * keyWidth
+                                // Center the black key there by shifting left by half its width
+                                let offset = CGFloat(whiteKeysBeforeCount) * keyWidth - (blackKeyWidth / 2)
                                 
                                 PianoKey(
                                     note: note.midiNote,
