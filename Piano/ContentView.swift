@@ -31,6 +31,9 @@ struct ContentView: View {
             
             // Piano keyboard
             GeometryReader { geometry in
+                let whiteKeyCount = notes.filter { !$0.isBlack }.count
+                let keyWidth = geometry.size.width / CGFloat(whiteKeyCount)
+                
                 ZStack(alignment: .topLeading) {
                     // White keys
                     HStack(spacing: 0) {
@@ -40,7 +43,7 @@ struct ContentView: View {
                                 isBlack: false,
                                 audioEngine: audioEngine
                             )
-                            .frame(width: geometry.size.width / CGFloat(notes.filter { !$0.isBlack }.count))
+                            .frame(width: keyWidth)
                         }
                     }
                     
@@ -50,7 +53,6 @@ struct ContentView: View {
                             let note = notes[index]
                             if note.isBlack {
                                 let whiteKeysBeforeCount = notes[0..<index].filter { !$0.isBlack }.count
-                                let keyWidth = geometry.size.width / CGFloat(notes.filter { !$0.isBlack }.count)
                                 let blackKeyWidth = keyWidth * 0.6
                                 // Position black key centered between white keys
                                 let offset = CGFloat(whiteKeysBeforeCount) * keyWidth + keyWidth - (blackKeyWidth / 2)
