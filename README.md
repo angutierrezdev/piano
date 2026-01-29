@@ -19,8 +19,12 @@ A small iOS piano application with 2 octaves that can be played with touch contr
 ## Building and Running
 
 1. Open `Piano.xcodeproj` in Xcode
-2. Select your target device (iPhone or iPad simulator)
-3. Press ⌘R to build and run
+2. **Instrument switching**: To have Piano, Flute, Accordion, and Organ actually change sound, add a General MIDI soundfont to the project:
+   - Download a free GM .sf2 file (e.g. [FluidR3_GM](https://github.com/FluidSynth/fluidsynth/wiki/SoundFont) or similar)
+   - Rename it to `GeneralMIDI.sf2` and drag it into the Piano group in Xcode
+   - Ensure "Copy items if needed" and the Piano target are checked
+3. Select your target device (iPhone or iPad simulator)
+4. Press ⌘R to build and run
 
 ## How to Use
 

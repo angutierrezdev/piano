@@ -1,4 +1,5 @@
 import AVFoundation
+import AudioToolbox
 
 enum SoundType: String, CaseIterable {
     case piano = "Piano"
@@ -21,6 +22,11 @@ class AudioEngine: ObservableObject {
     private var sampler: AVAudioUnitSampler
     @Published var currentSound: SoundType = .piano
     
+    /// URL to the bundled General MIDI soundfont. Add a .sf2 file (e.g. FluidR3_GM.sf2) to the target and name it "GeneralMIDI.sf2".
+    private var soundBankURL: URL? {
+        Bundle.main.url(forResource: "GeneralMIDI", withExtension: "sf2")
+    }
+    
     init() {
         engine = AVAudioEngine()
         sampler = AVAudioUnitSampler()
@@ -30,24 +36,33 @@ class AudioEngine: ObservableObject {
         
         do {
             try engine.start()
-            loadSoundFont()
+            loadInstrument()
         } catch {
             print("Error starting audio engine: \(error.localizedDescription)")
         }
     }
     
-    private func loadSoundFont() {
+    /// Load the current instrument from the bundled GM soundfont. Without a soundfont, the sampler uses a default (often flute-like) and program changes have no effect.
+    private func loadInstrument() {
+        guard let url = soundBankURL else {
+            print("General MIDI soundfont not found. Add a .sf2 file (e.g. FluidR3_GM.sf2) to the project and name it 'GeneralMIDI.sf2' so instrument changes work.")
+            return
+        }
         do {
-            // Use Apple's built-in General MIDI instruments
-            try sampler.loadInstrument(at: currentSound.midiProgram)
+            try sampler.loadSoundBankInstrument(
+                at: url,
+                program: currentSound.midiProgram,
+                bankMSB: UInt8(kAUSampler_DefaultMelodicBankMSB),
+                bankLSB: UInt8(kAUSampler_DefaultBankLSB)
+            )
         } catch {
-            print("Error loading instrument: \(error.localizedDescription)")
+            print("Error loading instrument \(currentSound.rawValue): \(error.localizedDescription)")
         }
     }
     
     func changeSound(to sound: SoundType) {
         currentSound = sound
-        loadSoundFont()
+        loadInstrument()
     }
     
     func playNote(_ note: UInt8, velocity: UInt8 = 100) {
@@ -56,16 +71,5 @@ class AudioEngine: ObservableObject {
     
     func stopNote(_ note: UInt8) {
         sampler.stopNote(note, onChannel: 0)
-    }
-}
-
-extension AVAudioUnitSampler {
-    func loadInstrument(at program: UInt8) throws {
-        // Use Apple's built-in General MIDI instruments
-        // Program change to select the instrument
-        self.sendProgramChange(program, onChannel: 0)
-        
-        // Note: On iOS, the built-in sampler automatically uses the system's General MIDI soundbank
-        // No need to explicitly load a soundbank file
     }
 }
