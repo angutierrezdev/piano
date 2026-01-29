@@ -10,7 +10,8 @@ struct ContentView: View {
         ("G#", 68, true), ("A", 69, false), ("A#", 70, true), ("B", 71, false),
         ("C", 72, false), ("C#", 73, true), ("D", 74, false), ("D#", 75, true),
         ("E", 76, false), ("F", 77, false), ("F#", 78, true), ("G", 79, false),
-        ("G#", 80, true), ("A", 81, false), ("A#", 82, true), ("B", 83, false)
+        ("G#", 80, true), ("A", 81, false), ("A#", 82, true), ("B", 83, false),
+        ("C", 84, false), ("C#", 85, true),
     ]
     
     var body: some View {
@@ -37,38 +38,50 @@ struct ContentView: View {
                 ZStack(alignment: .topLeading) {
                     // White keys
                     HStack(spacing: 0) {
-                        ForEach(notes.filter { !$0.isBlack }, id: \.midiNote) { note in
+                        ForEach(Array(notes.filter { !$0.isBlack }.enumerated()),
+                                id: \.element.midiNote) { (index, note) in
+                            let keyOffset = keyWidth * CGFloat(index)
+                            
                             PianoKey(
                                 note: note.midiNote,
                                 isBlack: false,
                                 audioEngine: audioEngine
                             )
+                            .onAppear {
+                                print("White key index:", index,
+                                          "note:", note.name,
+                                          "offset:", keyOffset)
+                            }
                             .frame(width: keyWidth)
                         }
                     }
                     
-                    // Black keys
-                    HStack(spacing: 0) {
-                        ForEach(0..<notes.count, id: \.self) { index in
-                            let note = notes[index]
-                            if note.isBlack {
-                                let whiteKeysBeforeCount = notes[0..<index].filter { !$0.isBlack }.count
-                                let blackKeyWidth = keyWidth * 0.6
-                                // Position black key centered at the right edge of the preceding white key
-                                // The right edge is at whiteKeysBeforeCount * keyWidth
-                                // Center the black key there by shifting left by half its width
-                                let offset = CGFloat(whiteKeysBeforeCount) * keyWidth - (blackKeyWidth / 2)
-                                
-                                PianoKey(
-                                    note: note.midiNote,
-                                    isBlack: true,
-                                    audioEngine: audioEngine
-                                )
-                                .frame(width: blackKeyWidth, height: geometry.size.height * 0.6)
-                                .offset(x: offset)
+                    // Black keys (it doesn't need HStack)
+                    ForEach(0..<notes.count, id: \.self) { index in
+                        let note = notes[index]
+                        if note.isBlack {
+                            let whiteKeysBeforeCount = notes[0..<index].filter { !$0.isBlack }.count
+                            let blackKeyWidth = keyWidth * 0.6
+                            // Position black key centered at the right edge of the preceding white key
+                            // The right edge is at whiteKeysBeforeCount * keyWidth
+                            // Center the black key there by shifting left by half its width
+                            let offset = CGFloat(whiteKeysBeforeCount) * keyWidth - (blackKeyWidth / 2)
+                            
+                            PianoKey(
+                                note: note.midiNote,
+                                isBlack: true,
+                                audioEngine: audioEngine
+                            )
+                            .onAppear {
+                                print("Black key index:", index,
+                                        "note:", note.name,
+                                        "offset:", offset)
                             }
+                            .frame(width: blackKeyWidth, height: geometry.size.height * 0.6)
+                            .offset(x: offset)
                         }
                     }
+                    
                 }
             }
             .frame(height: 300)
