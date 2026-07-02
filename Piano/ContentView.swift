@@ -11,8 +11,21 @@ struct ContentView: View {
         ("C", 72, false), ("C#", 73, true), ("D", 74, false), ("D#", 75, true),
         ("E", 76, false), ("F", 77, false), ("F#", 78, true), ("G", 79, false),
         ("G#", 80, true), ("A", 81, false), ("A#", 82, true), ("B", 83, false),
-        ("C", 84, false), ("C#", 85, true),
+        ("C", 84, false),
     ]
+
+    // Real pianos don't center black keys on the white-key boundary:
+    // C#/D# lean outward and F#/A# lean outward within their group.
+    // Shift is a fraction of the white key width, relative to the boundary.
+    private func blackKeyShift(_ name: String) -> CGFloat {
+        switch name {
+        case "C#": return -0.14
+        case "D#": return 0.14
+        case "F#": return -0.18
+        case "A#": return 0.18
+        default: return 0
+        }
+    }
     
     var body: some View {
         VStack {
@@ -38,20 +51,13 @@ struct ContentView: View {
                 ZStack(alignment: .topLeading) {
                     // White keys
                     HStack(spacing: 0) {
-                        ForEach(Array(notes.filter { !$0.isBlack }.enumerated()),
-                                id: \.element.midiNote) { (index, note) in
-                            let keyOffset = keyWidth * CGFloat(index)
-                            
+                        ForEach(notes.filter { !$0.isBlack },
+                                id: \.midiNote) { note in
                             PianoKey(
                                 note: note.midiNote,
                                 isBlack: false,
                                 audioEngine: audioEngine
                             )
-                            .onAppear {
-                                print("White key index:", index,
-                                          "note:", note.name,
-                                          "offset:", keyOffset)
-                            }
                             .frame(width: keyWidth)
                         }
                     }
@@ -62,21 +68,14 @@ struct ContentView: View {
                         if note.isBlack {
                             let whiteKeysBeforeCount = notes[0..<index].filter { !$0.isBlack }.count
                             let blackKeyWidth = keyWidth * 0.6
-                            // Position black key centered at the right edge of the preceding white key
-                            // The right edge is at whiteKeysBeforeCount * keyWidth
-                            // Center the black key there by shifting left by half its width
-                            let offset = CGFloat(whiteKeysBeforeCount) * keyWidth - (blackKeyWidth / 2)
-                            
+                            let center = (CGFloat(whiteKeysBeforeCount) + blackKeyShift(note.name)) * keyWidth
+                            let offset = center - blackKeyWidth / 2
+
                             PianoKey(
                                 note: note.midiNote,
                                 isBlack: true,
                                 audioEngine: audioEngine
                             )
-                            .onAppear {
-                                print("Black key index:", index,
-                                        "note:", note.name,
-                                        "offset:", offset)
-                            }
                             .frame(width: blackKeyWidth, height: geometry.size.height * 0.6)
                             .offset(x: offset)
                         }
