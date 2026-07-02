@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0BFAFD052F2BE30F00674178 /* GeneralMIDI.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = 0BFAFD032F2BE30F00674178 /* GeneralMIDI.sf2 */; };
 		2A000001 /* PianoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A000002 /* PianoApp.swift */; };
 		2A000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A000004 /* ContentView.swift */; };
 		2A000005 /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A000006 /* AudioEngine.swift */; };
@@ -15,12 +16,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2A00000B /* Piano.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Piano.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0BFAFD032F2BE30F00674178 /* GeneralMIDI.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = GeneralMIDI.sf2; sourceTree = "<group>"; };
 		2A000002 /* PianoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoApp.swift; sourceTree = "<group>"; };
 		2A000004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		2A000006 /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
 		2A000008 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2A00000A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		2A00000B /* Piano.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Piano.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,6 +36,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0BFAFD042F2BE30F00674178 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0BFAFD032F2BE30F00674178 /* GeneralMIDI.sf2 */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		2A00000D /* Piano */ = {
 			isa = PBXGroup;
 			children = (
@@ -42,6 +52,7 @@
 				2A000006 /* AudioEngine.swift */,
 				2A000008 /* Assets.xcassets */,
 				2A00000E /* Preview Content */,
+				0BFAFD042F2BE30F00674178 /* Resources */,
 			);
 			path = Piano;
 			sourceTree = "<group>";
@@ -128,6 +139,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BFAFD052F2BE30F00674178 /* GeneralMIDI.sf2 in Resources */,
 				2A000009 /* Preview Assets.xcassets in Resources */,
 				2A000007 /* Assets.xcassets in Resources */,
 			);
@@ -276,8 +288,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Piano/Preview Content\"";
+				DEVELOPMENT_TEAM = W95JS6RUPX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -288,7 +302,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.Piano;
+				PRODUCT_BUNDLE_IDENTIFIER = com.angutierrez.Piano;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -304,8 +318,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Piano/Preview Content\"";
+				DEVELOPMENT_TEAM = W95JS6RUPX;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.music";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -316,7 +332,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.Piano;
+				PRODUCT_BUNDLE_IDENTIFIER = com.angutierrez.Piano;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
